@@ -1,4 +1,4 @@
-#include "BumbleAIBridge/BumbleAIBridge.h"
+#include <QString>
 
 namespace BumbleAIBridge {
     QString getWelcomeMessage() {

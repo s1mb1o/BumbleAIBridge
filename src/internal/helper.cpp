@@ -4,5 +4,5 @@ namespace Internal {
     void doSomethingInternal() {
         // ...
     }
-}
-}
+} // namespace Internal
+} // namespace BumbleAIBridge

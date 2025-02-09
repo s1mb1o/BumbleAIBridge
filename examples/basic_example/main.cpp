@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <QDebug>
-#include "BumbleAIBridge/BumbleAIBridge.h"
+#include "BumbleAIBridge/AIClient.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
     QCoreApplication app(argc, argv);
-    qDebug() << BumbleAIBridge::getWelcomeMessage();
     return 0;
 }

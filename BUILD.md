@@ -54,7 +54,6 @@ mingw32-make
 ### Additional Notes
 - CMake Options:
 You can customize your build with additional CMake options. For example, to specify a custom Qt6 installation path:
-
 ```bash
 cmake -DQt6_DIR=/path/to/Qt6 ..
 ```
