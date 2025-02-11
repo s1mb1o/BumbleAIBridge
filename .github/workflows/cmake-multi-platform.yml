@@ -47,7 +47,7 @@ jobs:
     - name: Install Qt6 on Windows
       if: matrix.os == 'windows-latest'
       run: |
-        choco install -y qt6-sdk
+        choco install -y qt6-base-dev
         echo "CMAKE_PREFIX_PATH=C:\Qt\6.*/msvc*" >> $GITHUB_ENV
       shell: bash
 
