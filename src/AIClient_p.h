@@ -3,6 +3,7 @@
 #include "BumbleAIBridge/AIConfig.h"
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QPointer>
 
 namespace BumbleAIBridge {
 
@@ -14,6 +15,8 @@ public:
 
     AIConfig config;
     QNetworkAccessManager networkManager;
+
+    QPointer<QNetworkReply> activeReply;
 };
 
 }

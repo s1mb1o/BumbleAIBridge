@@ -22,17 +22,34 @@ class OllamaClient : public BumbleAIBridge::AIClient {
 
 public:
     explicit OllamaClient(const AIConfig& config, QObject* parent = nullptr);
+    explicit OllamaClient(QObject* parent = nullptr) : OllamaClient(AIConfig{}, parent) {}
     ~OllamaClient() override;
 
+    AIRunnerType type() const override {
+        return AIRunnerType::Ollama;
+    }
+
+    void resetContext() override;
+
+protected:
     /**
      * @brief Sends a request to the Ollama AI model.
      * @param prompt Input text.
      * @return Operation result indicating success or failure.
      */
-    OperationResult sendRequest(const QString& prompt) override;
+    OperationResult handleSpecificRequest(const QString& prompt, const QString& system, const QList<QByteArray>& imagesBase64) override;
+
+    // TODO: implement me
+    OperationResult handleListModelsRequest() override;
+
 
 private:
-    void handleReply(QNetworkReply* reply);
+    bool handleOneJsonObject(const QByteArray& data);
+    void appendMessageToContext(const QJsonObject& message);
+    void handleFinishedError();
+
+private slots:
+    void onReadyRead();
 
 };
 

@@ -16,6 +16,8 @@ public:
     QString serverUrl;
     QString apiKey;
     QString modelName;
+
+    bool isStreamingMode = false;   ///< Set to true to enable streaming of the response
 };
 
 }

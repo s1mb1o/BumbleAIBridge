@@ -25,9 +25,12 @@ set(CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 # Create the BumbleAIBridge library target.
 # This adds BumbleAIBridge.cpp and an internal helper file.
 # Add any other source files as needed.
-# BUMBLEAIBRIDGE_LIBRARY_TYPE
+
 add_library(BumbleAIBridge ${BUMBLEAIBRIDGE_LIBRARY_TYPE}
 ../include/BumbleAIBridge/AIClient.h
+../include/BumbleAIBridge/AIConfig.h
+../include/BumbleAIBridge/AIFactory.h
+../include/BumbleAIBridge/OperationResult.h
 AIBridge.cpp
 AIClient.cpp
 AIClient_p.h

@@ -22,6 +22,11 @@ struct OperationResult {
     static OperationResult failure(const QString &error) {
         return { false, error };
     }
+
+    static OperationResult notImplemented() {
+        return { false, "Not implemented" };
+    }
+
 };
 
 }

@@ -21,14 +21,25 @@ class OpenAIClient : public AIClient {
 
 public:
     explicit OpenAIClient(const AIConfig& config, QObject* parent = nullptr);
+    explicit OpenAIClient(QObject* parent = nullptr) : OpenAIClient(AIConfig{}, parent) {}
     ~OpenAIClient() override;
 
+    AIRunnerType type() const override {
+        return AIRunnerType::OpenAI;
+    }
+
+    void resetContext() override;
+
+protected:
     /**
      * @brief Sends a request to the OpenAI model.
      * @param prompt Input text.
      * @return Operation result indicating success or failure.
      */
-    OperationResult sendRequest(const QString& prompt) override;
+    OperationResult handleSpecificRequest(const QString& prompt, const QString& system, const QList<QByteArray>& imagesBase64) override;
+
+    // TODO: implement me
+    OperationResult handleListModelsRequest() override { return OperationResult::notImplemented(); }
 
 private:
     void handleReply(QNetworkReply* reply);

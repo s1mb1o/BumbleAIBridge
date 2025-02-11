@@ -31,10 +31,14 @@ OpenAIClient::~OpenAIClient()
 
 }
 
+void OpenAIClient::resetContext() {
+    // No persistent context to reset in OpenAIClient.
+}
 
 void OpenAIClient::handleReply(QNetworkReply* reply)
 {
     Q_D(OpenAIClient);
+
 
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray responseData = reply->readAll();
@@ -43,7 +47,6 @@ void OpenAIClient::handleReply(QNetworkReply* reply)
 
         if (parseError.error != QJsonParseError::NoError) {
             emit errorOccurred("JSON parsing error: " + parseError.errorString());
-            reply->deleteLater();
             return;
         }
 
@@ -58,15 +61,18 @@ void OpenAIClient::handleReply(QNetworkReply* reply)
             }
         }
     } else {
-        qDebug() << reply->readAll();
         emit errorOccurred(reply->errorString());
     }
-    reply->deleteLater();
 }
 
-OperationResult OpenAIClient::sendRequest(const QString& prompt)
+// TODO: QList<QByteArray>& imagesBase64
+OperationResult OpenAIClient::handleSpecificRequest(const QString& prompt, const QString& system, const QList<QByteArray>& imagesBase64)
 {
     Q_D(OpenAIClient);
+
+    if (d->config.apiKey.isEmpty()) {
+        return OperationResult::failure("Configuration error: apiKey is not set.");
+    }
 
 
     QString urlStr = d->config.serverUrl;
@@ -82,12 +88,21 @@ OperationResult OpenAIClient::sendRequest(const QString& prompt)
     QJsonObject json;
     json["model"] = d->config.modelName;
     QJsonArray messages;
+    if (!system.isEmpty()) {
+        messages.append(QJsonObject{{"role", "system"}, {"content", system}});
+    }
     messages.append(QJsonObject{{"role", "user"}, {"content", prompt}});
     json["messages"] = messages;
-    json["max_tokens"] = 50;
+    json["max_tokens"] = 50;    // XXX
+    json["stream"] = d->config.isStreamingMode;
 
-    QNetworkReply* reply = d->networkManager.post(request, QJsonDocument(json).toJson());
-    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply]() { handleReply(reply); });
+    d->activeReply = d->networkManager.post(request, QJsonDocument(json).toJson());
+    QObject::connect(d->activeReply, &QNetworkReply::finished, this, [this]() {
+        Q_D(OpenAIClient);
+        handleReply(d->activeReply);
+        d->activeReply->deleteLater();
+        d->activeReply.clear();
+    });
 
     return OperationResult::success();
 }
