@@ -6,6 +6,8 @@
 #include <QScopedPointer>
 
 
+class QNetworkReply;
+
 namespace BumbleAIBridge {
 namespace Internal {
 

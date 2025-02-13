@@ -2,6 +2,7 @@
 
 #include "BumbleAIBridge/AIConfig.h"
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 namespace BumbleAIBridge {
 

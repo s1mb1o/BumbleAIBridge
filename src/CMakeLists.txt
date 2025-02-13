@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Define the project name for the library
-project(BumbleAIBridgeLibrary LANGUAGES CXX)
+project(BumbleAIBridge LANGUAGES CXX)
 
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -13,18 +13,21 @@ find_package(Qt6 REQUIRED COMPONENTS Core Network)
 
 # Specify the include directories for MOC
 include_directories(
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/include/BumbleAIBridge
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/internal
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include/BumbleAIBridge
+    ${CMAKE_CURRENT_SOURCE_DIR}/
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal
 )
+# Set the directory of the current CMakeLists.txt file
+set(CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 
 # Create the BumbleAIBridge library target.
 # This adds BumbleAIBridge.cpp and an internal helper file.
 # Add any other source files as needed.
-add_library(BumbleAIBridge
-${CMAKE_SOURCE_DIR}/include/BumbleAIBridge/AIClient.h
+# BUMBLEAIBRIDGE_LIBRARY_TYPE
+add_library(BumbleAIBridge ${BUMBLEAIBRIDGE_LIBRARY_TYPE}
+../include/BumbleAIBridge/AIClient.h
 AIBridge.cpp
 AIClient.cpp
 AIClient_p.h
@@ -53,9 +56,11 @@ target_link_libraries(BumbleAIBridge
 )
 
 # Specify include directories for the target
-target_include_directories(BumbleAIBridge PRIVATE
+target_include_directories(BumbleAIBridge
+PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/include/BumbleAIBridge
+PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/internal
 )

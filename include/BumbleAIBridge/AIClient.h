@@ -8,8 +8,6 @@
 #include <QObject>
 #include <QString>
 #include <QScopedPointer>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 #include "AIConfig.h"
 #include "BumbleAIBridge/OperationResult.h"
 
